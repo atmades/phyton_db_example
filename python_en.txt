@@ -1,0 +1,55 @@
+# Данные о покупках
+purchases = [
+    {"item": "apple", "category": "fruit", "price": 1.2, "quantity": 10},
+    {"item": "banana", "category": "fruit", "price": 0.5, "quantity": 5},
+    {"item": "milk", "category": "dairy", "price": 1.5, "quantity": 2},
+    {"item": "bread", "category": "bakery", "price": 2.0, "quantity": 3},
+]
+
+# Func to calculate total revenue
+def total_revenue(purchases):
+    return sum(item['price'] * item['quantity'] for item in purchases)
+
+# Func to get items by category
+def items_by_category(purchases):
+    categories = {}
+    for purchase in purchases:
+        category = purchase['category']
+        if category not in categories:
+            categories[category] = []
+        if purchase['item'] not in categories[category]:
+            categories[category].append(purchase['item'])
+    return categories
+
+# Func to get purchases with price >= min_price
+def expensive_purchases(purchases, min_price):
+    return [purchase for purchase in purchases if purchase['price'] >= min_price]
+
+# Func to calculate average price by category
+def average_price_by_category(purchases):
+    category_prices = {}
+    category_counts = {}
+    for purchase in purchases:
+        category = purchase['category']
+        category_prices[category] = category_prices.get(category, 0) + purchase['price']
+        category_counts[category] = category_counts.get(category, 0) + 1
+    return {category: category_prices[category] / category_counts[category] for category in category_prices}
+
+# Func to find the category with the most items sold
+def most_frequent_category(purchases):
+    category_sales = {}
+    for purchase in purchases:
+        category = purchase['category']
+        category_sales[category] = category_sales.get(category, 0) + purchase['quantity']
+    return max(category_sales, key=category_sales.get)
+
+# Generate the report
+def generate_report(purchases, min_price):
+    print(f"Общая выручка: {total_revenue(purchases)}")
+    print(f"Товары по категориям: {items_by_category(purchases)}")
+    print(f"Покупки дороже {min_price}: {expensive_purchases(purchases, min_price)}")
+    print(f"Средняя цена по категориям: {average_price_by_category(purchases)}")
+    print(f"Категория с наибольшим количеством проданных товаров: {most_frequent_category(purchases)}")
+
+# Run the report with a minimum price filter
+generate_report(purchases, 1.0)
